@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI客户评分与排序系统 | 智能提效工具</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>AI客户智能评分系统</h1>
+            </div>
+            <p class="subtitle">智能分析客户价值，精准识别优先跟进对象</p>
+        </header>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2><i class="fas fa-user-plus"></i> 添加客户信息</h2>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="customerName"><i class="fas fa-user"></i> 客户姓名/公司名</label>
+                        <input type="text" id="customerName" placeholder="例如：张三或ABC科技有限公司">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="industry"><i class="fas fa-industry"></i> 行业类型</label>
+                            <select id="industry">
+                                <option value="">选择行业</option>
+                                <option value="tech">科技/互联网</option>
+                                <option value="finance">金融/保险</option>
+                                <option value="manufacturing">制造业</option>
+                                <option value="retail">零售/电商</option>
+                                <option value="healthcare">医疗健康</option>
+                                <option value="education">教育/培训</option>
+                                <option value="realestate">房地产</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="companySize"><i class="fas fa-users"></i> 公司规模</label>
+                            <select id="companySize">
+                                <option value="">选择规模</option>
+                                <option value="micro">微型企业 (1-10人)</option>
+                                <option value="small">小型企业 (11-50人)</option>
+                                <option value="medium">中型企业 (51-200人)</option>
+                                <option value="large">大型企业 (201-1000人)</option>
+                                <option value="enterprise">超大型企业 (1000人以上)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="annualRevenue"><i class="fas fa-chart-line"></i> 年营业额 (万元)</label>
+                            <input type="number" id="annualRevenue" placeholder="例如：500" min="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="potentialValue"><i class="fas fa-gem"></i> 潜在价值评分 (1-10)</label>
+                            <input type="number" id="potentialValue" placeholder="1-10分" min="1" max="10">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="engagementLevel"><i class="fas fa-handshake"></i> 互动程度 (1-10)</label>
+                            <input type="number" id="engagementLevel" placeholder="1-10分" min="1" max="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="urgency"><i class="fas fa-clock"></i> 紧急程度 (1-10)</label>
+                            <input type="number" id="urgency" placeholder="1-10分" min="1" max="10">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes"><i class="fas fa-sticky-note"></i> 备注/关键信息</label>
+                        <textarea id="notes" rows="3" placeholder="记录客户关键信息、需求或特别注意事项..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button id="addCustomerBtn" class="btn btn-primary">
+                            <i class="fas fa-plus-circle"></i> 添加客户
+                        </button>
+                        <button id="clearFormBtn" class="btn btn-secondary">
+                            <i class="fas fa-broom"></i> 清空表单
+                        </button>
+                    </div>
+                    
+                    <div class="excel-upload-section">
+                        <h3><i class="fas fa-file-excel"></i> 批量导入 (Excel/CSV)</h3>
+                        <div class="upload-container">
+                            <div class="upload-area" id="uploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>拖放Excel/CSV文件到这里，或点击选择文件</p>
+                                <small>支持.xlsx, .xls, .csv格式</small>
+                            </div>
+                            <input type="file" id="excelUpload" accept=".xlsx,.xls,.csv" style="display: none;">
+                            <div class="upload-actions">
+                                <button id="uploadBtn" class="btn btn-secondary">
+                                    <i class="fas fa-upload"></i> 选择文件
+                                </button>
+                                <a href="sample_customers.csv" class="btn btn-secondary" id="downloadTemplate" download="客户数据模板.csv">
+                                    <i class="fas fa-download"></i> 下载模板
+                                </a>
+                            </div>
+                        </div>
+                        <div class="upload-progress" id="uploadProgress" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <span class="progress-text">处理中...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="analysis-section">
+                <h2><i class="fas fa-chart-bar"></i> AI智能分析结果</h2>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="totalCustomers">0</span>
+                            <span class="stat-label">总客户数</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="highPriority">0</span>
+                            <span class="stat-label">高优先级</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="avgScore">0.0</span>
+                            <span class="stat-label">平均分</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value" id="topIndustry">-</span>
+                            <span class="stat-label">最佳行业</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation">
+                    <h3><i class="fas fa-robot"></i> AI推荐</h3>
+                    <div class="recommendation-content">
+                        <p id="aiInsight">添加客户后，AI将自动分析并生成个性化建议...</p>
+                        <div class="recommendation-actions">
+                            <button id="analyzeBtn" class="btn btn-ai" disabled>
+                                <i class="fas fa-magic"></i> 开始AI分析
+                            </button>
+                            <button id="exportBtn" class="btn btn-secondary">
+                                <i class="fas fa-download"></i> 导出报告
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <div class="section-header">
+                <h2><i class="fas fa-list-ol"></i> 客户优先级排序</h2>
+                <div class="section-header-controls">
+                    <div class="sort-controls">
+                        <select id="sortBy">
+                            <option value="score">按综合评分排序</option>
+                            <option value="priority">按优先级排序</option>
+                            <option value="revenue">按营业额排序</option>
+                            <option value="name">按姓名排序</option>
+                        </select>
+                        <button id="sortBtn" class="btn btn-secondary">
+                            <i class="fas fa-sort-amount-down"></i> 排序
+                        </button>
+                    </div>
+                    <div class="batch-controls">
+                        <button id="batchDeleteBtn" class="btn btn-danger" style="display: none;">
+                            <i class="fas fa-trash-alt"></i> 批量删除 (<span id="selectedCount">0</span>)
+                        </button>
+                        <button id="clearSelectionBtn" class="btn btn-secondary" style="display: none;">
+                            <i class="fas fa-times"></i> 取消选择
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                    <table id="customersTable">
+                    <thead>
+                        <tr>
+                            <th width="50">
+                                <input type="checkbox" id="selectAllCheckbox">
+                            </th>
+                            <th>排名</th>
+                            <th>客户名称</th>
+                            <th>行业</th>
+                            <th>规模</th>
+                            <th>营业额</th>
+                            <th>综合评分</th>
+                            <th>AI优先级</th>
+                            <th width="300">跟进建议</th>
+                            <th width="150">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customersTableBody">
+                        <tr class="empty-row">
+                            <td colspan="10" class="empty-message">
+                                <i class="fas fa-users-slash"></i>
+                                <p>暂无客户数据，请先添加客户信息</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>© 2025 AI提效咨询公司 | 客户智能评分系统 v1.0</p>
+            <p class="footer-note">本系统使用AI算法分析客户价值，帮助您更高效地分配销售资源</p>
+        </footer>
+    </div>
+
+    <!-- 优先级标签模板 -->
+    <template id="priorityBadgeTemplate">
+        <span class="priority-badge" data-priority=""></span>
+    </template>
+
+    <!-- 加载配置和主要脚本 -->
+    <script src="config.js"></script>
+    <script src="deepseek-analyzer.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

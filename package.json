@@ -1,0 +1,27 @@
+{
+  "name": "ai-customer-scoring-system",
+  "version": "1.0.0",
+  "description": "AI客户智能评分与排序系统",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "serve": "serve -s . -p 3000"
+  },
+  "keywords": [
+    "ai",
+    "customer",
+    "scoring",
+    "analytics",
+    "priority"
+  ],
+  "author": "AI提效咨询公司",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "serve": "^14.2.1"
+  }
+}

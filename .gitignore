@@ -1,0 +1,56 @@
+# 依赖目录
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 运行时数据
+.DS_Store
+Thumbs.db
+
+# 编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 操作系统文件
+*.log
+*.tmp
+*.temp
+
+# 构建输出
+dist/
+build/
+out/
+
+# 测试覆盖
+coverage/
+.nyc_output
+
+# 包管理器锁文件
+package-lock.json
+yarn.lock
+
+# 临时文件
+temp/
+tmp/
+
+# 用户数据
+user-data.json
+local-storage-backup.json
+
+# API密钥备份
+*.key
+*.pem
+*.cert
+
+# 开发服务器端口文件
+.server.pid
